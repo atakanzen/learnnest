@@ -21,7 +21,7 @@ import {
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { UpdateCatDto } from '../dto/update-cat.dto';
 import { Cat } from '../interfaces/cat.interface';
-import { CatsService } from '../service/cats.service';
+import { CatsService } from '../providers/cats.service';
 
 @Controller('cats')
 export class CatsController {
