@@ -5,17 +5,20 @@ import {
   Get,
   Header,
   HttpCode,
+  HttpStatus,
+  ImATeapotException,
   // HttpStatus,
   Param,
-  ParseBoolPipe,
+  // ParseBoolPipe,
   ParseIntPipe,
   Post,
   Put,
-  Query,
+  // Query,
   Redirect,
   // Req,
   // Res,
 } from '@nestjs/common';
+import { CustomForbiddenException } from 'src/common/exceptions/forbidden.exception';
 // import { Response, Request } from 'express';
 // import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat.dto';
@@ -75,11 +78,12 @@ export class CatsController {
 
   @Put(':id')
   update(@Param('id') id: number, @Body() updateCatDto: UpdateCatDto) {
-    return `This action updates a #${id} cat`;
+    // Only for demonstration purposes.
+    throw new CustomForbiddenException();
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return `This action removes a #${id} cat`;
+    throw new ImATeapotException('How dare you?');
   }
 }
