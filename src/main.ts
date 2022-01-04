@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { logger } from './common/middlewares/logger.middleware';
 
 async function bootstrap() {
@@ -22,6 +23,16 @@ async function bootstrap() {
 
   // Global functional middleware.
   app.use(logger);
+
+  /**
+   * This usage won't be able to inject dependencies since it's done outside of
+   * any module.
+   *
+   * See file app.module to see how to solve this issue.
+   *
+   * @example
+   * app.useGlobalFilters(new HttpExceptionFilter());
+   */
 
   await app.listen(3000);
 }

@@ -15,10 +15,12 @@ import {
   Put,
   // Query,
   Redirect,
+  UseFilters,
   // Req,
   // Res,
 } from '@nestjs/common';
 import { CustomForbiddenException } from 'src/common/exceptions/forbidden.exception';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 // import { Response, Request } from 'express';
 // import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat.dto';
@@ -28,6 +30,7 @@ import { CatsService } from '../providers/cats.service';
 
 @Controller('cats')
 export class CatsController {
+  // Injecting `CatsService` provider.
   constructor(private catsService: CatsService) {}
 
   @Post()
@@ -77,11 +80,14 @@ export class CatsController {
   }
 
   @Put(':id')
+  @UseFilters(new HttpExceptionFilter())
   update(@Param('id') id: number, @Body() updateCatDto: UpdateCatDto) {
     // Only for demonstration purposes.
     throw new CustomForbiddenException();
   }
 
+  // We can let the initiation of the filter to the framework via DI, like here.
+  @UseFilters(HttpExceptionFilter)
   @Delete(':id')
   remove(@Param('id') id: number) {
     throw new ImATeapotException('How dare you?');
