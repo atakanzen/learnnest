@@ -81,8 +81,11 @@ export class CatsController {
 
   @Put(':id')
   @UseFilters(new HttpExceptionFilter())
-  update(@Param('id') id: number, @Body() updateCatDto: UpdateCatDto) {
-    // Only for demonstration purposes.
+  update(
+    // Binding Parse Pipe on method level. Nest will throw an exception if the parameter is not numeric.
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCatDto: UpdateCatDto,
+  ) {
     throw new CustomForbiddenException();
   }
 
