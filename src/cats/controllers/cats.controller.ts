@@ -16,11 +16,15 @@ import {
   // Query,
   Redirect,
   UseFilters,
+  UsePipes,
   // Req,
   // Res,
 } from '@nestjs/common';
 import { CustomForbiddenException } from 'src/common/exceptions/forbidden.exception';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { ClassValidationPipe } from 'src/common/pipes/class.validation.pipe';
+import { JoiValidationPipe } from 'src/common/pipes/joi.validation.pipe';
+import { createCatSchema } from 'src/common/schemas/joi.create-cat.schema';
 // import { Response, Request } from 'express';
 // import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat.dto';
@@ -35,7 +39,10 @@ export class CatsController {
 
   @Post()
   @Header('Cache-Control', 'none')
-  create(@Body() createCatDto: CreateCatDto) {
+  // Joi Schema Validation
+  @UsePipes(new JoiValidationPipe(createCatSchema))
+  // Class-Validator Validation (Only Typescript)
+  create(@Body(new ClassValidationPipe()) createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
   }
 
