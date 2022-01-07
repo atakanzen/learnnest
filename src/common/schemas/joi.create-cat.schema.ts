@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 export const createCatSchema = Joi.object({
   id: Joi.number().min(1).required(),

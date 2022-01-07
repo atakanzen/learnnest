@@ -15,13 +15,17 @@ import {
   Put,
   // Query,
   Redirect,
+  SetMetadata,
   UseFilters,
+  UseGuards,
   UsePipes,
   // Req,
   // Res,
 } from '@nestjs/common';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { CustomForbiddenException } from 'src/common/exceptions/forbidden.exception';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 import { ClassValidationPipe } from 'src/common/pipes/class.validation.pipe';
 import { JoiValidationPipe } from 'src/common/pipes/joi.validation.pipe';
 import { createCatSchema } from 'src/common/schemas/joi.create-cat.schema';
@@ -33,12 +37,14 @@ import { Cat } from '../interfaces/cat.interface';
 import { CatsService } from '../providers/cats.service';
 
 @Controller('cats')
+@UseGuards(RolesGuard)
 export class CatsController {
   // Injecting `CatsService` provider.
   constructor(private catsService: CatsService) {}
 
   @Post()
   @Header('Cache-Control', 'none')
+  @Roles('admin')
   // Joi Schema Validation
   @UsePipes(new JoiValidationPipe(createCatSchema))
   // Class-Validator Validation (Only Typescript)
