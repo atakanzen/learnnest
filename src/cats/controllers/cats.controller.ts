@@ -18,17 +18,20 @@ import {
   SetMetadata,
   UseFilters,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   // Req,
   // Res,
 } from '@nestjs/common';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { CustomForbiddenException } from 'src/common/exceptions/forbidden.exception';
-import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { ClassValidationPipe } from 'src/common/pipes/class.validation.pipe';
-import { JoiValidationPipe } from 'src/common/pipes/joi.validation.pipe';
-import { createCatSchema } from 'src/common/schemas/joi.create-cat.schema';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { CustomForbiddenException } from '../../common/exceptions/forbidden.exception';
+import { HttpExceptionFilter } from '../../common/filters/http-exception.filter';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { LoggingInterceptor } from '../../common/interceptors/logging.interceptor';
+import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
+import { ClassValidationPipe } from '../../common/pipes/class.validation.pipe';
+import { JoiValidationPipe } from '../../common/pipes/joi.validation.pipe';
+import { createCatSchema } from '../../common/schemas/joi.create-cat.schema';
 // import { Response, Request } from 'express';
 // import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat.dto';
@@ -38,13 +41,14 @@ import { CatsService } from '../providers/cats.service';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
+@UseInterceptors(LoggingInterceptor)
+@UseInterceptors(TransformInterceptor)
 export class CatsController {
   // Injecting `CatsService` provider.
   constructor(private catsService: CatsService) {}
 
   @Post()
   @Header('Cache-Control', 'none')
-  @Roles('admin')
   // Joi Schema Validation
   @UsePipes(new JoiValidationPipe(createCatSchema))
   // Class-Validator Validation (Only Typescript)
@@ -93,6 +97,7 @@ export class CatsController {
   }
 
   @Put(':id')
+  @Roles('admin')
   @UseFilters(new HttpExceptionFilter())
   update(
     // Binding Parse Pipe on method level. Nest will throw an exception if the parameter is not numeric.
