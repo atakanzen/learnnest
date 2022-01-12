@@ -5,7 +5,6 @@ import {
   Get,
   Header,
   HttpCode,
-  HttpStatus,
   ImATeapotException,
   // HttpStatus,
   Param,
@@ -15,23 +14,20 @@ import {
   Put,
   // Query,
   Redirect,
-  SetMetadata,
   UseFilters,
   UseGuards,
   UseInterceptors,
   UsePipes,
-  // Req,
-  // Res,
 } from '@nestjs/common';
-import { Roles } from '../../common/decorators/roles.decorator';
-import { CustomForbiddenException } from '../../common/exceptions/forbidden.exception';
-import { HttpExceptionFilter } from '../../common/filters/http-exception.filter';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { LoggingInterceptor } from '../../common/interceptors/logging.interceptor';
-import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
-import { ClassValidationPipe } from '../../common/pipes/class.validation.pipe';
-import { JoiValidationPipe } from '../../common/pipes/joi.validation.pipe';
-import { createCatSchema } from '../../common/schemas/joi.create-cat.schema';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { CustomForbiddenException } from '../../../common/exceptions/forbidden.exception';
+import { HttpExceptionFilter } from '../../../common/filters/http-exception.filter';
+import { RolesGuard } from '../../../common/guards/roles.guard';
+import { LoggingInterceptor } from '../../../common/interceptors/logging.interceptor';
+import { TransformInterceptor } from '../../../common/interceptors/transform.interceptor';
+import { ClassValidationPipe } from '../../../common/pipes/class.validation.pipe';
+import { JoiValidationPipe } from '../../../common/pipes/joi.validation.pipe';
+import { createCatSchema } from '../../../common/schemas/joi.create-cat.schema';
 // import { Response, Request } from 'express';
 // import { Observable, of } from 'rxjs';
 import { CreateCatDto } from '../dto/create-cat.dto';
